@@ -237,7 +237,7 @@ func (s *snake) getHead() coord {
 }
 
 func RenderTitle() string {
-	return "Initial attempt at Snake Game in Go using slices/pointers/channels:\n"
+	return "Initial attempt at Snake game in Go making sure I'm using slices/pointers/channels properly:\n"
 }
 
 func RenderArena(m *Model) {
