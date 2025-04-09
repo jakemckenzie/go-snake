@@ -1,6 +1,6 @@
 # Snake in Go using Bubbletea
 
-
+![First Attempt](https://github.com/jakemckenzie/go-snake/blob/main/docs/attempt-1.gif?raw=true)
 
 ## TODOs:
 
