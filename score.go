@@ -9,7 +9,7 @@ import (
 )
 
 func readHighScore() int {
-	path := "data/.snake_highscore."
+	path := "data/.snake_highscore"
 	data, err := os.ReadFile(path)
 	if err != nil {
 		if os.IsNotExist(err) {
