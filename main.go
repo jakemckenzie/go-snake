@@ -30,14 +30,14 @@ type Model struct {
 	verticalLine   string
 	emptySymbol    string
 	snakeSymbol    string
-	foodSymbol     string
+	eggSymbol     string
 	width          int
 	height         int
 	arena          [][]string
 	snake          snake
 	lostGame       bool
 	score          int
-	food           food
+	egg           egg
 	rng            *rand.Rand
 }
 
@@ -47,7 +47,7 @@ type snake struct {
 	direction int
 }
 
-type food struct {
+type egg struct {
 	x, y int
 }
 
@@ -70,7 +70,7 @@ func initialModel() *Model {
 		verticalLine:   "#",
 		emptySymbol:    " ",
 		snakeSymbol:    "o",
-		foodSymbol:     "$",
+		eggSymbol:     "$",
 		width:          40,
 		height:         20,
 		arena:          [][]string{},
@@ -86,8 +86,8 @@ func initialModel() *Model {
 		},
 		lostGame: false,
 		score:    0,
-		food: food{
-			x: 10, y: 20,
+		egg: egg{
+			x: 20, y: 10,
 		},
 		rng: rand.New(rand.NewSource(time.Now().UnixNano())),
 	}
@@ -95,10 +95,10 @@ func initialModel() *Model {
 
 func (m *Model) Init() tea.Cmd {
 	var x, y int
-	x = rand.Intn(m.height - 1)
-	y = rand.Intn(m.width - 1)
-	m.food.x = x
-	m.food.y = y
+	x = rand.Intn(m.height-2) + 3
+	y = rand.Intn(m.width-2) + 3
+	m.egg.x = x
+	m.egg.y = y
 	return m.tick()
 }
 
@@ -131,7 +131,7 @@ func (m *Model) View() string {
 
 	RenderArena(m)
 	RenderSnake(m)
-	RenderFood(m)
+	RenderEgg(m)
 
 	for _, row := range m.arena {
 		sb.WriteString(strings.Join(row, "") + "\n")
@@ -195,14 +195,15 @@ func (m *Model) moveSnake() tea.Cmd {
 		c.x++
 	}
 
-	if c.x == m.food.x && c.y == m.food.y {
+	if c.x == m.egg.x && c.y == m.egg.y {
 		m.snake.length++
+		m.snake.body = append(m.snake.body, c)
 		for {
-			x := rand.Intn(m.height-1) + 1
-			y := rand.Intn(m.width-1) + 1
+			x := rand.Intn(m.height-2) + 1
+			y := rand.Intn(m.width-2) + 1
 			if !m.snake.hitSelf(coord{x, y}) {
-				m.food.x = x
-				m.food.y = y
+				m.egg.x = x
+				m.egg.y = y
 				break
 			}
 		}
@@ -259,8 +260,8 @@ func RenderSnake(m *Model) {
 	}
 }
 
-func RenderFood(m *Model) {
-	m.arena[m.food.x][m.food.y] = m.foodSymbol
+func RenderEgg(m *Model) {
+	m.arena[m.egg.x][m.egg.y] = m.eggSymbol
 }
 
 func RenderScore(score int) string {
