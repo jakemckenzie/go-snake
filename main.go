@@ -30,14 +30,14 @@ type Model struct {
 	verticalLine   string
 	emptySymbol    string
 	snakeSymbol    string
-	eggSymbol     string
+	eggSymbol      string
 	width          int
 	height         int
 	arena          [][]string
 	snake          snake
 	lostGame       bool
 	score          int
-	egg           egg
+	egg            egg
 	rng            *rand.Rand
 }
 
@@ -66,11 +66,11 @@ func main() {
 
 func initialModel() *Model {
 	return &Model{
-		horizontalLine: "#",
-		verticalLine:   "#",
-		emptySymbol:    " ",
-		snakeSymbol:    "o",
-		eggSymbol:     "$",
+		horizontalLine: "🧱",
+		verticalLine:   "🧱",
+		emptySymbol:    "  ",
+		snakeSymbol:    "🟩",
+		eggSymbol:      "🥚",
 		width:          40,
 		height:         20,
 		arena:          [][]string{},
@@ -81,13 +81,13 @@ func initialModel() *Model {
 				{x: 13, y: 13},
 				{x: 14, y: 14},
 			},
-			length:    4,
+			length:    3,
 			direction: Right,
 		},
 		lostGame: false,
 		score:    0,
 		egg: egg{
-			x: 20, y: 10,
+			x: 10, y: 10,
 		},
 		rng: rand.New(rand.NewSource(time.Now().UnixNano())),
 	}
@@ -95,8 +95,8 @@ func initialModel() *Model {
 
 func (m *Model) Init() tea.Cmd {
 	var x, y int
-	x = rand.Intn(m.height-2) + 3
-	y = rand.Intn(m.width-2) + 3
+	x = rand.Intn(m.height-2) + 1
+	y = rand.Intn(m.width-2) + 1
 	m.egg.x = x
 	m.egg.y = y
 	return m.tick()
@@ -261,7 +261,11 @@ func RenderSnake(m *Model) {
 }
 
 func RenderEgg(m *Model) {
-	m.arena[m.egg.x][m.egg.y] = m.eggSymbol
+	if m.egg.x >= 0 && m.egg.x < m.height && m.egg.y >= 0 && m.egg.y < m.width {
+		m.arena[m.egg.x][m.egg.y] = m.eggSymbol
+	} else {
+		fmt.Printf("Invalid egg position: x=%d, y=%d\n", m.egg.x, m.egg.y)
+	}
 }
 
 func RenderScore(score int) string {
