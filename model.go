@@ -15,10 +15,11 @@ type Model struct {
 	width, height                                                            int
 	arena                                                                    [][]string
 	snake                                                                    snake
-	lostGame                                                                 bool
-	score                                                                    int
+	lostGame, newHighScore                                                   bool
+	score, highScore                                                         int
 	egg                                                                      coord
 	rng                                                                      *rand.Rand
+	directionQueue                                                           []int
 }
 
 func initialModel() *Model {
@@ -41,10 +42,12 @@ func initialModel() *Model {
 			length:    3,
 			direction: Right,
 		},
-		lostGame: false,
-		score:    0,
-		egg:      coord{x: 10, y: 10},
-		rng:      rand.New(rand.NewSource(time.Now().UnixNano())),
+		lostGame:     false,
+		score:        0,
+		egg:          coord{x: 10, y: 10},
+		rng:          rand.New(rand.NewSource(time.Now().UnixNano())),
+		highScore:    readHighScore(),
+		newHighScore: false,
 	}
 }
 
@@ -115,9 +118,35 @@ func (m *Model) tick() tea.Cmd {
 	})
 }
 
+func (m *Model) isOppositeDirection(dir1, dir2 int) bool {
+	opposites := map[int]int{
+		Up:    Down,
+		Down:  Up,
+		Left:  Right,
+		Right: Left,
+	}
+	return opposites[dir1] == dir2
+}
+
 func (m *Model) changeSnakeDirection(direction int) tea.Cmd {
+	if len(m.directionQueue) == 0 {
+		if !m.isOppositeDirection(direction, m.snake.direction) {
+			m.directionQueue = append(m.directionQueue, direction)
+		}
+	} else {
+		lastQueued := m.directionQueue[len(m.directionQueue)-1]
+		if !m.isOppositeDirection(direction, lastQueued) {
+			m.directionQueue = append(m.directionQueue, direction)
+		}
+	}
+
 	if m.snake.hitWall(*m) {
 		m.lostGame = true
+		if m.score > m.highScore {
+			m.newHighScore = true
+			m.highScore = m.score
+			writeHighScore(m.score)
+		}
 		return tea.Quit
 	}
 
@@ -136,6 +165,14 @@ func (m *Model) changeSnakeDirection(direction int) tea.Cmd {
 }
 
 func (m *Model) moveSnake() tea.Cmd {
+	if len(m.directionQueue) > 0 {
+        newDir := m.directionQueue[0]
+        m.directionQueue = m.directionQueue[1:]
+        if !m.isOppositeDirection(newDir, m.snake.direction) {
+            m.snake.direction = newDir
+        }
+    }
+
 	h := m.snake.getHead()
 	c := coord{x: h.x, y: h.y}
 
