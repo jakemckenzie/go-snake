@@ -13,6 +13,6 @@ Unrelated but it might as well go here. I was in an F# channel and [someone post
 
 - **look into bubbletea to make the game look better**: emojis or shaders(?)
 - **ignore user input if already going a direction**: if snake is already going -> prevent <-, etc
-- **separate out from main**: main got fairly long, best to separate this out into different go files
+- ~~**separate out from main**: main got fairly long, best to separate this out into different go files~~
 - **add menu?**: I like [cli of life's menu](https://github.com/gabe565/cli-of-life/tree/main), probably [worth reading](https://medium.com/@nexidian/writing-an-interactive-cli-menu-in-golang-d6438b175fb6).
 - **TRS-80 CRT Effect**: never implemented this for snake, might be fun, might be outside the scope
