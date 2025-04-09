@@ -11,26 +11,27 @@ import (
 type TickMsg time.Time
 
 type Model struct {
-	horizontalLine, verticalLine, emptySymbol, snakeSymbol, eggSymbol string
-	width, height                                                     int
-	arena                                                             [][]string
-	snake                                                             snake
-	lostGame                                                          bool
-	score                                                             int
-	egg                                                               coord
-	rng                                                               *rand.Rand
+	horizontalLine, verticalLine, emptySymbol, snakeHeadSymbol, snakeBodySymbol, eggSymbol string
+	width, height                                                                          int
+	arena                                                                                  [][]string
+	snake                                                                                  snake
+	lostGame                                                                               bool
+	score                                                                                  int
+	egg                                                                                    coord
+	rng                                                                                    *rand.Rand
 }
 
 func initialModel() *Model {
 	return &Model{
-		horizontalLine: "🧱",
-		verticalLine:   "🧱",
-		emptySymbol:    "  ",
-		snakeSymbol:    "🟩",
-		eggSymbol:      "🥚",
-		width:          40,
-		height:         20,
-		arena:          [][]string{},
+		horizontalLine:  "🧱",
+		verticalLine:    "🧱",
+		emptySymbol:     "  ",
+		snakeHeadSymbol: "🟢",
+		snakeBodySymbol: "🟩",
+		eggSymbol:       "🥚",
+		width:           40,
+		height:          20,
+		arena:           [][]string{},
 		snake: snake{
 			body: []coord{
 				{x: 11, y: 11},

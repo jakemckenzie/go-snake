@@ -21,8 +21,12 @@ func RenderArena(m *Model) {
 }
 
 func RenderSnake(m *Model) {
-	for _, c := range m.snake.body {
-		m.arena[c.x][c.y] = m.snakeSymbol
+	for i, c := range m.snake.body {
+		if i == len(m.snake.body)-1 {
+			m.arena[c.x][c.y] = m.snakeHeadSymbol
+		} else {
+			m.arena[c.x][c.y] = m.snakeBodySymbol
+		}
 	}
 }
 
