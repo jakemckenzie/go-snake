@@ -166,12 +166,12 @@ func (m *Model) changeSnakeDirection(direction int) tea.Cmd {
 
 func (m *Model) moveSnake() tea.Cmd {
 	if len(m.directionQueue) > 0 {
-        newDir := m.directionQueue[0]
-        m.directionQueue = m.directionQueue[1:]
-        if !m.isOppositeDirection(newDir, m.snake.direction) {
-            m.snake.direction = newDir
-        }
-    }
+		newDir := m.directionQueue[0]
+		m.directionQueue = m.directionQueue[1:]
+		if !m.isOppositeDirection(newDir, m.snake.direction) {
+			m.snake.direction = newDir
+		}
+	}
 
 	h := m.snake.getHead()
 	c := coord{x: h.x, y: h.y}

@@ -11,6 +11,10 @@ I reached the channels section of the golang section of [boot.dev](https://www.b
 >A uintptr is an integer, not a reference. Converting a Pointer to a uintptr creates an integer value with no pointer semantics. Even if a uintptr holds the address of some object, the garbage collector will not update that uintptr's value if the object moves, nor will that uintptr keep the object from being reclaimed.
 
 Unrelated but it might as well go here. I was in an F# channel and [someone posted morphdom](https://www.npmjs.com/package/morphdom) which seems like a really useful npm package. I wish I had known about it years ago. Its benefits for me, deciding about the correctness of the DOM node tree seems fairly obvious. It was a problem that came about fairly regularly. That led me down a rabbit hole of learning about Idiomorph which has a similar approach. Here is a [good discussion between Micah Geisel and Delaney discussing Idiomorph](https://www.youtube.com/watch?v=IrtBBqyDrJU), it's cool to see very different types of engineers coming to grips with the same problem. "manipulating a dom that is stable is actually fast" is obvious to me coming from the react world, I hope they keep pushing this.
+
+## Notes 2:
+
+Should I handle [KeyMsg Key](https://github.com/charmbracelet/bubbletea/blob/1a0062becb4a36a76d7b63e55c44888c53d65835/key.go#L44) in Bubbletea by accessing the first element in the array, or some some or [channel buffer](https://gobyexample.com/channel-buffering) or a queue like I did? I liked the way that I did but it's a bit verbose. The way Bubbletea handles user input is interesting, it seems like a fairly powerful Tui "framework".
 ## TODOs:
 
 - ~~**look into bubbletea to make the game look better**: emojis or shaders(?)~~
